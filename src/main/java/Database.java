@@ -34,53 +34,57 @@ public class Database {
                                     """).execute();
 
         conn.prepareStatement("""
-               CREATE TABLE IF NOT EXISTS currencies (
-                   code VARCHAR(3) NOT NULL,
-                   `name` VARCHAR(100) NOT NULL,
-                   PRIMARY KEY(code)
-);
-                                    """).execute();
+                               CREATE TABLE IF NOT EXISTS currencies (
+                                   code VARCHAR(3) NOT NULL,
+                                   `name` VARCHAR(100) NOT NULL,
+                                   PRIMARY KEY(code)
+                );
+                                                    """).execute();
         conn.prepareStatement("""
-              CREATE TABLE IF NOT EXISTS deposits (
-                   id        INTEGER NOT NULL,
-                   amount    DECIMAL(15,2) NOT NULL,
-                   `date`     DATE NOT NULL,
-                   account_id INTEGER NOT NULL,
-                   PRIMARY KEY(id)
-);
-                                    """).execute();
+                              CREATE TABLE IF NOT EXISTS deposits (
+                                   id        INTEGER NOT NULL,
+                                   amount    DECIMAL(15,2) NOT NULL,
+                                   `date`     DATE NOT NULL,
+                                   account_id INTEGER NOT NULL,
+                                   PRIMARY KEY(id)
+                );
+                                                    """).execute();
 
         conn.prepareStatement("""
-              CREATE TABLE IF NOT EXISTS transactions (
-                   id        INTEGER NOT NULL,
-                   amount    DECIMAL(15,2) NOT NULL,
-                   `date`    DATE NOT NULL,
-                   sender    INTEGER NOT NULL,
-                   recipient INTEGER NOT NULL,
-                   PRIMARY KEY(id)
-);
-                                    """).execute();
+                              CREATE TABLE IF NOT EXISTS transactions (
+                                   id        INTEGER NOT NULL,
+                                   amount    DECIMAL(15,2) NOT NULL,
+                                   `date`    DATE NOT NULL,
+                                   sender    INTEGER NOT NULL,
+                                   recipient INTEGER NOT NULL,
+                                   PRIMARY KEY(id)
+                );
+                                                    """).execute();
         conn.prepareStatement("""
- ALTER TABLE accounts
-        ADD FOREIGN KEY ( currency )
-        REFERENCES currencies ( code );
-
-        ALTER TABLE accounts
-        ADD  FOREIGN KEY (`user` )
-        REFERENCES users ( id );
-
-        ALTER TABLE deposits
-        ADD FOREIGN KEY ( account_id )
-        REFERENCES accounts ( id );
-
-        ALTER TABLE transactions
-        ADD FOREIGN KEY ( recipient )
-        REFERENCES accounts ( id );
-
-        ALTER TABLE transactions
-        ADD  FOREIGN KEY ( sender )
-        REFERENCES accounts ( id )
-                                    """).execute();
+                 ALTER TABLE accounts
+                        ADD FOREIGN KEY ( currency )
+                        REFERENCES currencies ( code );
+                """).execute();
+        conn.prepareStatement("""
+                        ALTER TABLE accounts
+                        ADD FOREIGN KEY (`user`)
+                        REFERENCES users ( id );
+                """).execute();
+        conn.prepareStatement("""
+                        ALTER TABLE deposits
+                        ADD FOREIGN KEY ( account_id )
+                        REFERENCES accounts ( id );
+                """).execute();
+        conn.prepareStatement("""
+                        ALTER TABLE transactions
+                        ADD FOREIGN KEY ( recipient )
+                        REFERENCES accounts ( id );
+                """).execute();
+        conn.prepareStatement("""
+                ALTER TABLE transactions
+                ADD  FOREIGN KEY ( sender )
+                REFERENCES accounts ( id )
+                                            """).execute();
         conn.close();
 
 
