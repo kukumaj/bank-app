@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Database {
@@ -21,6 +22,7 @@ public class Database {
                     password     VARCHAR(256) NOT NULL,
                     PRIMARY KEY(id)
                 );
+                
                     """).execute();
 
         conn.prepareStatement("""
@@ -93,6 +95,15 @@ public class Database {
     public static void main(String[] args) throws SQLException {
         Database database = new Database();
         database.connect();
+
+               Connection con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/bank-app?" +
+                        "user=user&password=default");
+        ResultSet resultSet = con.prepareStatement("show tables;").executeQuery();
+        while (resultSet.next()){
+            System.out.println(resultSet.getString(1));
+
+        }
+
 
     }
 }
